@@ -1,5 +1,5 @@
 import csv
-import datetime
+from datetime import time
 
 import locations
 from truck import Truck
@@ -12,33 +12,31 @@ if __name__ == '__main__':
         read_package = csv.reader(packages_file, delimiter=",", quotechar='"')
         packages_csv = [row for row in read_package]
 
-    # throwing all the packages to the package handler to send package info to package and ge the object back and put
-    # into the hash table
-    all_packages = PackageHandler(packages_csv)
     # create truck 1
     truck_1 = Truck()
     # set departure time for truck 1
-    truck_1.set_departure_time(datetime.time(8))
+    truck_1.set_departure_time(time(8))
     # create truck 2
     truck_2 = Truck()
     # set departure time for truck 2
-    truck_2.set_departure_time(datetime.time(9, 5))
+    truck_2.set_departure_time(time(9, 5))
     # create truck 3
     truck_3 = Truck()
     # set departure time for truck 3
-    truck_3.set_departure_time(datetime.time(10, 30))
-    # array of package IDs that have to go in truck 1
-    truck_1_manual = [13, 14, 15, 16, 19, 20, 34, 39]
+    truck_3.set_departure_time(time(10, 30))
+    # throwing all the packages to the package handler to send package info to package and ge the object back and put
+    # into the hash table
+    all_packages = PackageHandler(packages_csv)
+        # array of package IDs that have to go in truck 1
+    truck_1_manual = [13, 12, 14, 15, 16, 17, 19, 20, 21, 23, 29, 7,  34, 39, 40, 4]
     # array of package IDs that have to go in truck 2
-    truck_2_manual = [3, 6, 18, 25, 26, 36, 38]
+    truck_2_manual = [1, 3, 6, 11, 22, 18, 24, 25, 26, 30, 31, 32, 36, 37, 38, 10]
     # array of package IDs that have to go in truck 3
-    truck_3_manual = [9, 8]
-    # packages that need to be delivered before 10:30
-    load_next_time_sensitive = [1, 29, 30, 31, 37, 40]
-    # the rest of the packages that can be delivered whenever
-    load_last = [2, 4, 5, 7, 10, 11, 12, 17, 21, 22, 23, 24, 27, 28, 32, 33, 35]
-
-    print(all_packages.get(13))
+    truck_3_manual = [5, 9, 8, 2, 27, 28, 33, 35]
+    # packages that are delayed by flight
+    delayed_packages = [6, 28, 32, 25]
+    # package with wrong address
+    wrong_address_package = [9]
     # Load truck 1 with required packages
     for i in truck_1_manual:
         truck_1.add_package(all_packages.get(i))
@@ -49,6 +47,21 @@ if __name__ == '__main__':
     for i in truck_3_manual:
         truck_3.add_package(all_packages.get(i))
 
+    for i in delayed_packages:
+        package = all_packages.get(i)
+        package.set_update_time(time(9, 5))
+
+    for i in wrong_address_package:
+        package = all_packages.get(i)
+        package.set_update_time(time(10, 30))
+
+    all_packages.print()
+    print("Packages in Truck 1")
+    truck_1.print_packages()
+    print("Packages in Truck 2")
+    truck_2.print_packages()
+    print("Packages in Truck 3")
+    truck_3.print_packages()
 
     # package9 = packages.get(9)
     # package9.print_out()

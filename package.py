@@ -1,3 +1,5 @@
+from datetime import time
+
 import locations
 
 
@@ -12,9 +14,10 @@ class Package:
         self.weight = package_details[6]
         self.special_instructions = package_details[7]
         self.status = "at the hub"
-        self.update_time = ""
+        self.update_time = time(8)
         self.location_id = locations.addresses_csv[self.address]
-        self.print_out()
+        #self.print_out()
+        self.truck = None
         # en route or delivered
 
     def get_id(self):
@@ -47,7 +50,10 @@ class Package:
     def get_location_id(self):
         return self.location_id
 
+    def set_update_time(self, time):
+        self.update_time = time
+
     def print_out(self):
         print("Package ID: " + self.id + "\t Address: " + self.location_id + " " + self.address + " " + self.city +
               ", " + self.state + " " + self.zip + "\t Delivery Deadline: " + self.delivery_deadline +
-              "\t Weight: " + self.weight + "\t Status: " + self.status + " at " + self.update_time)
+              "\t Weight: " + self.weight + "\t Status: " + self.status + " at " + str(self.update_time))

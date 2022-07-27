@@ -19,4 +19,5 @@ class Distance:
             if distance < min_distance:
                 min_distance = distance
                 next_package = package
+
         return min_distance

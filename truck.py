@@ -1,4 +1,4 @@
-import datetime
+from datetime import time
 from package import Package
 
 
@@ -8,8 +8,9 @@ class Truck:
         self.package_count = 0
         self.speed = 18
         self.packages = {}
+        self.starting_location = 0
         self.location_id = 0
-        self.departure_time = datetime.time()
+        self.departure_time = time()
 
     def add_package(self, package: Package):
         if self.package_limit > self.package_count:
@@ -30,3 +31,7 @@ class Truck:
         self.departure_time = time
         print(self.departure_time)
         return
+
+    def print_packages(self):
+        for key in self.packages:
+            self.packages[key].print_out()

@@ -13,7 +13,8 @@ class PackageHandler:
 
     def add(self, key, package):
         hashed_key = self.get_hash(key)
-        labeled_package = [hashed_key, package]
+        # I think labeled_package should use the package ID, not the hashed ID
+        labeled_package = [key, package]
         if self.map[hashed_key] is None:
             self.map[hashed_key] = list([labeled_package])
             return True
@@ -26,11 +27,12 @@ class PackageHandler:
             return True
 
     def get(self, package_key):
-        print("got to get")
         hashed_key = self.get_hash(package_key)
         if self.map[hashed_key] is not None:
             for pack in self.map[hashed_key]:
-                if pack[0] == package_key:
+                # hashed key in pack[0] is always an integer because it is the result of a math operation
+                # package_key could be integer or string. Let's cast both to string to perform string comparison
+                if str(pack[0]) == str(package_key):
                     return pack[1]
         return None
 
@@ -44,9 +46,10 @@ class PackageHandler:
                 return True
 
     def print(self):
-        for pack in self.map:
-            if pack is not None:
-                print(str(pack))
+        for slot in self.map:
+            for pack in slot:
+                if pack is not None:
+                    pack[1].print_out
 
     def load_package(self, packages):
         for package in packages:
