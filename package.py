@@ -29,6 +29,10 @@ class Package:
     def get_id(self):
         return self.id
 
+    # Sets location id
+    def set_location_id(self, location_id):
+        self.location_id = location_id
+
     # Gets location Id
     def get_location_id(self):
         return self.location_id

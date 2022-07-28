@@ -108,7 +108,7 @@ if __name__ == '__main__':
         reset_update_time()
         # Introduction and choices
         print('\n******* WGU Tracking System *******')
-        print('Truck 1: ' + str(truck_1.get_total_miles()) + ' miles \t Truck 2: ' + str(
+        print('Truck 1: ' + str(round(truck_1.get_total_miles(), 1)) + ' miles \t Truck 2: ' + str(
             truck_2.get_total_miles()) +
               ' miles \t Truck 3: ' + str(truck_3.get_total_miles()) + ' miles \t Total truck miles: '
               + str(total_truck_miles))
@@ -135,6 +135,7 @@ if __name__ == '__main__':
                 print('\n')
             except:
                 print('\nTime or package ID input is incorrect\n')
+
         # Handles tracking all packages at a specific time.
         elif decision == '2':
             get_time = input('Please enter a time in 24 hour format with only hour and minutes. Example: 13:24 \n')
@@ -151,8 +152,9 @@ if __name__ == '__main__':
                 print('\n\n')
             except:
                 print('\nSomething went wrong!\n')
+
         # handles exiting the program
-        elif decision == 3:
+        elif decision == '3':
             run_program = False
         # handles incorrect input
         else:

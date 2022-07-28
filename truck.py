@@ -1,7 +1,6 @@
+import csv
 from datetime import date, datetime, time, timedelta
 from math import ceil
-
-import numpy
 from package import Package
 
 # Handles everything with the trucks
@@ -18,9 +17,16 @@ class Truck:
         self.location_id = 0
         self.departure_time = time()
         self.route = {}
-        self.load_data()
         self.master_distance = 0.0
         self.master_time = self.departure_time
+        self.distances2d = self.load_distance()
+
+    # Load distances
+    def load_distance(self):
+        with open("WGUPSDistanceTable.csv") as packages_file:
+            read_package = csv.reader(packages_file, delimiter=",", quotechar='"')
+            return [row for row in read_package]
+            print(packages_csv)
 
     # Adds package
     def add_package(self, package: Package):
@@ -62,19 +68,14 @@ class Truck:
                 last_route = [None, distance_back_home, self.get_time_amount(distance_back_home), None]
                 self.route[99] = last_route
 
-    # Load data from csv on the distances
-    def load_data(self):
-        distances_file = open("WGUPSDistanceTable.csv")
-        self.distances2d = numpy.genfromtxt(distances_file, delimiter=",")
-
     # Calculates the distance between and returns the distance - have to check with input is larger
     def distance_between(self, add1, add2):
         if int(add2) > int(add1):
             distance = self.distances2d[int(add2)][int(add1)]
-            return distance
+            return float(distance)
         elif int(add1) > int(add2):
             distance = self.distances2d[int(add1)][int(add2)]
-            return distance
+            return float(distance)
         else:
             return 0
 
@@ -107,7 +108,7 @@ class Truck:
     def get_total_miles(self):
         total_miles = 0
         for key in self.route:
-            total_miles += int(self.route[key][1])
+            total_miles += self.route[key][1]
         return total_miles
 
     # increments the current time with the minutes to add
