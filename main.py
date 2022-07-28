@@ -66,8 +66,10 @@ if __name__ == '__main__':
             late_package.set_zip("84111")
         else:
             late_package.set_address("300 State St")
+            late_package.set_location_id(12)
             late_package.set_zip("84103")
             late_package.set_status("incorrect address")
+            truck_3.sort_packages()
         late_package_time = time(9, 5)
         if check_time < late_package_time:
             late_packages = [28, 6, 32, 25]
