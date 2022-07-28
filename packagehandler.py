@@ -45,3 +45,14 @@ class PackageHandler:
                 if j is not None:
                     self.map[i][j][1].print_out()
 
+    def reset_statuses(self):
+        for i in range(0, len(self.map)):
+            for j in range(0, len(self.map[i])):
+                if j is not None:
+                    self.map[i][j][1].set_status("at the hub")
+
+    def reset_update_times(self, update_time):
+        for i in range(0, len(self.map)):
+            for j in range(0, len(self.map[i])):
+                if j is not None:
+                    self.map[i][j][1].set_update_time(update_time)

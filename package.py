@@ -25,30 +25,6 @@ class Package:
     def get_id(self):
         return self.id
 
-    def get_address(self):
-        return self.address
-
-    def get_city(self):
-        return self.city
-
-    def get_state(self):
-        return self.state
-
-    def get_zip(self):
-        return self.zip
-
-    def get_delivery_deadline(self):
-        return self.delivery_deadline
-
-    def get_weight(self):
-        return self.weight
-
-    def get_special_instructions(self):
-        return self.special_instructions
-
-    def get_delivery_status(self):
-        return self.status
-
     def get_location_id(self):
         return self.location_id
 
@@ -61,15 +37,11 @@ class Package:
     def set_address(self, address):
         self.address = address
 
-    def set_city(self, city):
-        self.city = city
-
-    def set_state(self, state):
-        self.state = state
-
     def set_zip(self, zipcode):
         self.zip = zipcode
 
     def print_out(self):
+        # print(f"ID: {self.id:<2}\t{self.address:<38}  {self.city:<16} {self.zip}\t Deadline: "
+        #      f"{self.delivery_deadline:<8}\t {self.status:<17} \tWeight: {self.weight}")
         print(f"ID: {self.id:<2}\t{self.address:<38}  {self.city:<16} {self.zip}\t Deadline: "
-              f"{self.delivery_deadline:<8}\twas {self.status} at {str(self.update_time)}\tWeight: {self.weight}")
+              f"{self.delivery_deadline:<8}\t {self.status:<17} at {str(self.update_time)}\tWeight: {self.weight}kg")

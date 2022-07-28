@@ -4,8 +4,11 @@ from math import ceil
 import numpy
 from package import Package
 
+# this handles everything with the trucks
+
 
 class Truck:
+    # Constructor
     def __init__(self):
         self.package_limit = 16
         self.package_count = 0
@@ -19,44 +22,36 @@ class Truck:
         self.master_distance = 0.0
         self.master_time = self.departure_time
 
+    # Adds package
     def add_package(self, package: Package):
         if self.package_limit > self.package_count:
             self.packages[package.get_id()] = package
             self.package_count += 1
 
-    def remove_package(self, package):
-        del self.packages[package.get_id()]
-        self.package_count -= 1
-
-    def get_packages(self):
-        return self.packages
-
-    def get_package_count(self):
-        return self.package_count
-
+    # Sets the time of departure for the truck and also sets the master time used for tracking route
     def set_departure_time(self, departure_time):
         self.departure_time = departure_time
         self.master_time = departure_time
         return
 
-    def print_packages(self):
-        for key in self.packages:
-            self.packages[key].print_out()
-
-    def print_packages_route(self):
-        for key in self.route:
-            if self.route[key][0] is not None:
-                self.route[key][0].print_out()
-
+    # Sorts all the packages on the truck using the greedy algorithm
     def sort_packages(self):
+        # Sets initial location to the hub 0
         from_location = self.starting_location
+        # Create temp package holder to delete the package to run the algorithm
         temp_packages = []
+        # Loads the temp package holder from the main packages
         for key in self.packages:
             temp_packages.append(self.packages[key])
+        # Sets i to the number of packages on the truck
         i = self.package_count
+        # Main loop to create the route for the truck
         while i > 0:
+            # Pass from location and all the packages to the greedy algorithm
             route = self.min_distance_from(from_location, temp_packages)
+            # Add the closest package to the route
             self.route[route[0].get_id()] = route
+            # set the next from location to this location
             from_location = route[0].get_location_id()
             del temp_packages[route[3]]
             i -= 1
@@ -114,10 +109,9 @@ class Truck:
         return dt.time()
 
     def run_truck_until(self, time_until):
-        if time_until > self.departure_time:
+        if time_until >= self.departure_time:
             for key in self.packages:
                 self.packages[key].set_status("en route")
-                #self.packages[key].print_out()
         self.master_time = self.departure_time
         for key in self.route:
             self.master_time = self.add_minutes_to_time(self.master_time, self.route[key][2])
