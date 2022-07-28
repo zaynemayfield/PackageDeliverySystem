@@ -1,15 +1,9 @@
 # Author: Zayne Mayfield
 # Student ID: 000206367
-
-
 import csv
 from datetime import time
 from truck import Truck
 from packagehandler import PackageHandler
-
-
-def restart_program():
-    return
 
 
 if __name__ == '__main__':
@@ -57,19 +51,22 @@ if __name__ == '__main__':
         # reset all status for simulation to work correctly
         all_packages.reset_statuses()
 
-
+    # Check user input and make changes according to the scenario
     def check_statuses(check_time):
+        # Handle the wrong address package
         get_address_time = time(10, 30)
-        late_package = all_packages.get(9)
+        wrong_address_package = all_packages.get(9)
         if check_time >= get_address_time:
-            late_package.set_address("410 S State St")
-            late_package.set_zip("84111")
+            wrong_address_package.set_address("410 S State St")
+            wrong_address_package.set_zip("84111")
         else:
-            late_package.set_address("300 State St")
-            late_package.set_location_id(12)
-            late_package.set_zip("84103")
-            late_package.set_status("incorrect address")
+            wrong_address_package.set_address("300 State St")
+            wrong_address_package.set_location_id(12)
+            wrong_address_package.set_zip("84103")
+            wrong_address_package.set_status("incorrect address")
             truck_3.sort_packages()
+
+        # handle the delayed packages
         late_package_time = time(9, 5)
         if check_time < late_package_time:
             late_packages = [28, 6, 32, 25]
@@ -79,7 +76,7 @@ if __name__ == '__main__':
             late_packages = [28, 6, 32, 25]
             for j in late_packages:
                 all_packages.get(j).set_status('at the hub')
-
+        # If the check time is before 8:00 then set all update times to the user requested time.
         start_time = time(8)
         if check_time < start_time:
             all_packages.reset_update_times(check_time)
@@ -99,6 +96,7 @@ if __name__ == '__main__':
 
     # calculate total miles and print out each truck miles and total miles
     total_truck_miles = truck_1_total_miles + truck_2_total_miles + truck_3_total_miles
+
     ##################################################################################################################
     # START OF GUI
     ##################################################################################################################

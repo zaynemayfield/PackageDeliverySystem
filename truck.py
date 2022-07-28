@@ -4,7 +4,7 @@ from math import ceil
 import numpy
 from package import Package
 
-# this handles everything with the trucks
+# Handles everything with the trucks
 
 
 class Truck:
@@ -51,19 +51,23 @@ class Truck:
             route = self.min_distance_from(from_location, temp_packages)
             # Add the closest package to the route
             self.route[route[0].get_id()] = route
-            # set the next from location to this location
+            # Set the next from location to this location
             from_location = route[0].get_location_id()
+            # Delete the package from temp_packages so it cannot be compared in the algorithm again
             del temp_packages[route[3]]
             i -= 1
+            # if this is the last time then need to calculate back to the Hub
             if i == 0:
                 distance_back_home = self.distance_between(from_location, 0)
                 last_route = [None, distance_back_home, self.get_time_amount(distance_back_home), None]
                 self.route[99] = last_route
 
+    # Load data from csv on the distances
     def load_data(self):
         distances_file = open("WGUPSDistanceTable.csv")
         self.distances2d = numpy.genfromtxt(distances_file, delimiter=",")
 
+    # Calculates the distance between and returns the distance - have to check with input is larger
     def distance_between(self, add1, add2):
         if int(add2) > int(add1):
             distance = self.distances2d[int(add2)][int(add1)]
@@ -74,10 +78,11 @@ class Truck:
         else:
             return 0
 
+    # Calculates the time it takes to travel a distance with 18 MPH
     def get_time_amount(self, distance):
         return ceil((distance / 18) * 60)
 
-
+    # This run the greedy algorithm checking which of the packages is closet
     def min_distance_from(self, from_id, packages):
         next_route = []
         next_package = None
@@ -98,16 +103,20 @@ class Truck:
         next_route.append(min_distance_index)
         return next_route
 
+    # Adds all the distances up from the route
     def get_total_miles(self):
         total_miles = 0
         for key in self.route:
             total_miles += int(self.route[key][1])
         return total_miles
 
+    # increments the current time with the minutes to add
     def add_minutes_to_time(self, timeval, minutes_to_add):
         dt = datetime.combine(date.today(), timeval) + timedelta(minutes=minutes_to_add)
         return dt.time()
 
+    # this runs the simulation using the route data and checking for when the time is greater than or equal to user
+    # input time
     def run_truck_until(self, time_until):
         if time_until >= self.departure_time:
             for key in self.packages:
