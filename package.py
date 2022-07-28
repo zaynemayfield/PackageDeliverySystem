@@ -16,8 +16,6 @@ class Package:
         self.status = "at the hub"
         self.update_time = time(8)
         self.location_id = locations.addresses_csv[self.address]
-        # self.print_out()
-        # en route or delivered
 
     def get_id(self):
         return self.id
@@ -54,9 +52,19 @@ class Package:
 
     def set_status(self, new_status):
         self.status = new_status
-        print(str(self.id) + " " + str(self.status))
+
+    def set_address(self, address):
+        self.address = address
+
+    def set_city(self, city):
+        self.city = city
+
+    def set_state(self, state):
+        self.state = state
+
+    def set_zip(self, zipcode):
+        self.zip = zipcode
 
     def print_out(self):
-        print("Package ID: " + self.id + "\t Address: " + self.location_id + " " + self.address + " " + self.city +
-              ", " + self.state + " " + self.zip + "\t Delivery Deadline: " + self.delivery_deadline +
-              "\t Weight: " + self.weight + "\t Status: " + self.status + " at " + str(self.update_time))
+        print(f"ID: {self.id:<2}\t{self.address:<38}  {self.city:<16} {self.zip}\t"
+              f"Deadline: {self.delivery_deadline:<8}\t{self.status} at {str(self.update_time)}\tWeight: {self.weight}")

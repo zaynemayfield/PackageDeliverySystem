@@ -6,7 +6,10 @@ class PackageHandler:
     def __init__(self, packages):
         self.size = 10
         self.map = [None] * self.size
-        self.load_package(packages)
+        for package in packages:
+            new_package = Package(package)
+            key = new_package.get_id()
+            self.add(key, new_package)
 
     def get_hash(self, key):
         return int(key) % len(self.map)
@@ -46,13 +49,7 @@ class PackageHandler:
                 return True
 
     def print(self):
-        for slot in self.map:
-            for pack in slot:
-                if pack is not None:
-                    pack[1].print_out
-
-    def load_package(self, packages):
-        for package in packages:
-            new_package = Package(package)
-            key = new_package.get_id()
-            self.add(key, new_package)
+        for i in range(0, len(self.map)):
+            for j in range(0, len(self.map[i])):
+                if j is not None:
+                    self.map[i][j][1].print_out()

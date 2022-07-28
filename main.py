@@ -30,14 +30,12 @@ if __name__ == '__main__':
     # into the hash table
     all_packages = PackageHandler(packages_csv)
         # array of package IDs that have to go in truck 1
-    truck_1_manual_loading = [13, 12, 14, 15, 16, 17, 19, 20, 21, 23, 29, 7, 34, 39, 40, 4]
+    truck_1_manual_loading = [13, 12, 14, 15, 16, 17, 19, 20, 21, 23, 29, 7,  34, 39, 40, 4]
     # array of package IDs that have to go in truck 2
-    truck_2_manual_loading = [1, 3, 6, 11, 22, 18, 24, 25, 26, 30, 31, 32, 36, 37, 38, 10]
+    truck_2_manual_loading = [1, 3, 6, 18, 24, 25, 26, 30, 31, 32, 36, 37, 38]
     # array of package IDs that have to go in truck 3
-    truck_3_manual_loading = [5, 9, 8, 2, 27, 28, 33, 35]
+    truck_3_manual_loading = [5, 9, 10, 11,  8, 2, 27, 28, 33, 35, 22]
     # packages that are delayed by flight
-    delayed_packages = [6, 28, 32, 25]
-    # package with wrong address
     wrong_address_package = [9]
     # Load truck 1 with required packages
     for i in truck_1_manual_loading:
@@ -48,25 +46,26 @@ if __name__ == '__main__':
     # Load truck 3 with required packages
     for i in truck_3_manual_loading:
         truck_3.add_package(all_packages.get(i))
+    all_packages.get(9).set_address("410 S State St")
+    all_packages.get(9).set_city("Salt Lake City")
+    all_packages.get(9).set_state("UT")
+    all_packages.get(9).set_zip("84111")
 
-    for i in delayed_packages:
+    for i in truck_1_manual_loading:
+        package = all_packages.get(i)
+        package.set_update_time(time(8))
+
+    for i in truck_2_manual_loading:
         package = all_packages.get(i)
         package.set_update_time(time(9, 5))
 
-    for i in wrong_address_package:
+    for i in truck_3_manual_loading:
         package = all_packages.get(i)
         package.set_update_time(time(10, 30))
 
-    all_packages.print()
-    print("Packages in Truck 1")
-    truck_1.print_packages()
-    print("Packages in Truck 2")
-    truck_2.print_packages()
-    print("Packages in Truck 3")
-    truck_3.print_packages()
-
     truck_1.sort_packages()
     truck_2.sort_packages()
+    truck_2.print_packages_route()
     truck_3.sort_packages()
     truck_1_total_miles = truck_1.get_total_miles()
     truck_2_total_miles = truck_2.get_total_miles()
@@ -79,7 +78,30 @@ if __name__ == '__main__':
     show_all_9 = time(9)
     show_all_10 = time(10)
     show_all_13 = time(13)
+    print('\n\n 9:00 am print out of status changes')
+    print('Truck 1')
     truck_1.run_truck_until(show_all_9)
+    print('\n\nTruck 2')
+    truck_2.run_truck_until(show_all_9)
+    print('\n\nTruck 3')
+    truck_3.run_truck_until(show_all_9)
+
+    print('\n\n 10:00 am print out of status changes')
+    print('Truck 1')
+    truck_1.run_truck_until(show_all_10)
+    print('\n\nTruck 2')
+    truck_2.run_truck_until(show_all_10)
+    print('\n\nTruck 3')
+    truck_3.run_truck_until(show_all_10)
+
+    print('\n\n 1:00 pm print out of status changes')
+    print('Truck 1')
+    truck_1.run_truck_until(show_all_13)
+    print('\n\nTruck 2')
+    truck_2.run_truck_until(show_all_13)
+    print('\n\nTruck 3')
+    truck_3.run_truck_until(show_all_13)
+
     all_packages.print()
     # package9 = packages.get(9)
     # package9.print_out()

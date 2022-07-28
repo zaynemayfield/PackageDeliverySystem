@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import date, datetime, time, timedelta
 from math import ceil
 
 import numpy
@@ -18,6 +18,8 @@ class Truck:
         self.departure_time = time()
         self.route = {}
         self.load_data()
+        self.master_distance = 0.0
+        self.master_time = self.departure_time
 
     def add_package(self, package: Package):
         if self.package_limit > self.package_count:
@@ -36,12 +38,17 @@ class Truck:
 
     def set_departure_time(self, departure_time):
         self.departure_time = departure_time
+        self.master_time = departure_time
         return
 
     def print_packages(self):
-        print("Departure time: " + str(self.departure_time))
         for key in self.packages:
             self.packages[key].print_out()
+
+    def print_packages_route(self):
+        for key in self.route:
+            if self.route[key][0] is not None:
+                self.route[key][0].print_out()
 
     def sort_packages(self):
         from_location = self.starting_location
@@ -59,7 +66,6 @@ class Truck:
                 distance_back_home = self.distance_between(from_location, 0)
                 last_route = [None, distance_back_home, self.get_time_amount(distance_back_home), None]
                 self.route[99] = last_route
-        print(self.route)
 
     def load_data(self):
         distances_file = open("WGUPSDistanceTable.csv")
@@ -76,7 +82,8 @@ class Truck:
             return 0
 
     def get_time_amount(self, distance):
-        return time(0, ceil((distance / 18) * 60))
+        return ceil((distance / 18) * 60)
+
 
     def min_distance_from(self, from_id, packages):
         next_route = []
@@ -104,13 +111,26 @@ class Truck:
             total_miles += int(self.route[key][1])
         return total_miles
 
+    def add_minutes_to_time(self, timeval, minutes_to_add):
+        dt = datetime.combine(date.today(), timeval) + timedelta(minutes=minutes_to_add)
+        return dt.time()
+
     def run_truck_until(self, time_until):
-        print(time_until)
-        print(self.departure_time)
         if time_until > self.departure_time:
-            print("it's greater")
             for key in self.packages:
                 self.packages[key].set_status("en route")
+                self.packages[key].print_out()
+        self.master_time = self.departure_time
+        for key in self.route:
+            self.master_time = self.add_minutes_to_time(self.master_time, self.route[key][2])
+            if self.master_time <= time_until:
+                self.master_distance += self.route[key][1]
+                if self.route[key][0] is not None:
+                    self.route[key][0].set_status("delivered")
+                    self.route[key][0].set_update_time(self.master_time)
+            else:
+                return
+
 
 
 
