@@ -39,17 +39,9 @@ class PackageHandler:
                     return pack[1]
         return None
 
-    def remove(self, package_key):
-        hashed_key = self.get_hash(package_key)
-        if self.map[hashed_key] is None:
-            return False
-        for i in range(0, len(self.map[hashed_key])):
-            if self.map[hashed_key][i][0] == package_key:
-                self.map[hashed_key].pop(i)
-                return True
-
     def print(self):
         for i in range(0, len(self.map)):
             for j in range(0, len(self.map[i])):
                 if j is not None:
                     self.map[i][j][1].print_out()
+

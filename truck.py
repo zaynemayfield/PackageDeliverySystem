@@ -2,8 +2,6 @@ from datetime import date, datetime, time, timedelta
 from math import ceil
 
 import numpy
-
-from distance import Distance
 from package import Package
 
 
@@ -119,7 +117,7 @@ class Truck:
         if time_until > self.departure_time:
             for key in self.packages:
                 self.packages[key].set_status("en route")
-                self.packages[key].print_out()
+                #self.packages[key].print_out()
         self.master_time = self.departure_time
         for key in self.route:
             self.master_time = self.add_minutes_to_time(self.master_time, self.route[key][2])

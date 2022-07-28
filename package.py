@@ -1,6 +1,5 @@
 from datetime import time
-
-import locations
+import csv
 
 
 class Package:
@@ -15,7 +14,13 @@ class Package:
         self.special_instructions = package_details[7]
         self.status = "at the hub"
         self.update_time = time(8)
-        self.location_id = locations.addresses_csv[self.address]
+        self.location_id = self.get_location_ids_from_csv()
+
+    def get_location_ids_from_csv(self):
+        with open("WGUPSAddressFile.csv") as addresses_file:
+            read_address = csv.reader(addresses_file, delimiter=",", quotechar='"')
+            addresses_csvfile = dict(read_address)
+            return addresses_csvfile[self.address]
 
     def get_id(self):
         return self.id
@@ -66,5 +71,5 @@ class Package:
         self.zip = zipcode
 
     def print_out(self):
-        print(f"ID: {self.id:<2}\t{self.address:<38}  {self.city:<16} {self.zip}\t"
-              f"Deadline: {self.delivery_deadline:<8}\t{self.status} at {str(self.update_time)}\tWeight: {self.weight}")
+        print(f"ID: {self.id:<2}\t{self.address:<38}  {self.city:<16} {self.zip}\t Deadline: "
+              f"{self.delivery_deadline:<8}\twas {self.status} at {str(self.update_time)}\tWeight: {self.weight}")
