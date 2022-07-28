@@ -112,8 +112,8 @@ if __name__ == '__main__':
             truck_2.get_total_miles()) +
               ' miles \t Truck 3: ' + str(truck_3.get_total_miles()) + ' miles \t Total truck miles: '
               + str(total_truck_miles))
-        decision = input("Choose an option: \t 1: Track package by ID \t 2: View all packages at specific time \t"
-                         "3: Exit \nType in either 1, 2 or 3: \n")
+        decision = input("Choose an option:\n1: Track package by ID | 2: View all packages at specific time |"
+                         " 3: Exit \nType in 1, 2 or 3: \n")
         # Handles tracking 1 package at a specific time
         if decision == '1':
             package_id = input(f'\nPlease enter package ID: ')
