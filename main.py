@@ -38,11 +38,11 @@ if __name__ == '__main__':
 
     # Load into trucks
     for i in truck_1_manual_loading:
-        truck_1.add_package(all_packages.get(i))
+        truck_1.add_package(all_packages.look_up_hash_table_function(i))
     for i in truck_2_manual_loading:
-        truck_2.add_package(all_packages.get(i))
+        truck_2.add_package(all_packages.look_up_hash_table_function(i))
     for i in truck_3_manual_loading:
-        truck_3.add_package(all_packages.get(i))
+        truck_3.add_package(all_packages.look_up_hash_table_function(i))
 
     # function to reset the times to be able to run the reports again
     def reset_update_time():
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     def check_statuses(check_time):
         # Handle the wrong address package
         get_address_time = time(10, 30)
-        wrong_address_package = all_packages.get(9)
+        wrong_address_package = all_packages.look_up_hash_table_function(9)
         if check_time >= get_address_time:
             wrong_address_package.set_address("410 S State St")
             wrong_address_package.set_zip("84111")
@@ -71,25 +71,22 @@ if __name__ == '__main__':
         if check_time < late_package_time:
             late_packages = [28, 6, 32, 25]
             for j in late_packages:
-                all_packages.get(j).set_status('delayed on flight')
+                all_packages.look_up_hash_table_function(j).set_status('delayed on flight')
         else:
             late_packages = [28, 6, 32, 25]
             for j in late_packages:
-                all_packages.get(j).set_status('at the hub')
+                all_packages.look_up_hash_table_function(j).set_status('at the hub')
         # If the check time is before 8:00 then set all update times to the user requested time.
         start_time = time(8)
         if check_time < start_time:
             all_packages.reset_update_times(check_time)
-
-    # Run the reset update times
-    reset_update_time()
 
     # Sort the packages in the trucks using the Greedy algorithm
     truck_1.sort_packages()
     truck_2.sort_packages()
     truck_3.sort_packages()
 
-    # get miles from each truck
+    # Getet miles from each truck
     truck_1_total_miles = truck_1.get_total_miles()
     truck_2_total_miles = truck_2.get_total_miles()
     truck_3_total_miles = truck_3.get_total_miles()
@@ -120,7 +117,7 @@ if __name__ == '__main__':
             get_time = input('Please enter a time in 24 hour format with only hour and minutes. Example: 13:24 \n')
             try:
                 package_id = int(package_id)
-                package = all_packages.get(package_id)
+                package = all_packages.look_up_hash_table_function(package_id)
                 if package is not None:
                     print('\n Package ID seems to be invalid \n')
                 (hour, minute) = get_time.split(':')

@@ -61,6 +61,7 @@ class Truck:
             from_location = route[0].get_location_id()
             # Delete the package from temp_packages so it cannot be compared in the algorithm again
             del temp_packages[route[3]]
+            # Decrement after each loop
             i -= 1
             # if this is the last time then need to calculate back to the Hub
             if i == 0:
@@ -68,7 +69,7 @@ class Truck:
                 last_route = [None, distance_back_home, self.get_time_amount(distance_back_home), None]
                 self.route[99] = last_route
 
-    # Calculates the distance between and returns the distance - have to check with input is larger
+    # Calculates the distance between and returns the distance - have to check which input is larger
     def distance_between(self, add1, add2):
         if int(add2) > int(add1):
             distance = self.distances2d[int(add2)][int(add1)]
@@ -83,25 +84,40 @@ class Truck:
     def get_time_amount(self, distance):
         return ceil((distance / 18) * 60)
 
-    # This run the greedy algorithm checking which of the packages is closet
+    # This runs the greedy algorithm checking which of the packages is closet
     def min_distance_from(self, from_id, packages):
+        # Initialize empty array to store route data
         next_route = []
+        # Sets next page to none for use in holding what the next package will be to run through the algorithm
         next_package = None
-        min_distance = 1e7
+        # Setting a min distance that is larger than any that will be found
+        min_distance = 100
+        # Keeps track of the array index that needs to be deleted from temp_packages
         min_distance_index = 0
+        # Keeps track of the number of times it loops through
         array_index_counter = 0
+        # Goes through each package in the packages
         for package in packages:
+            # Gets the location id from the package
             to_id = package.get_location_id()
+            # Sends from and to location id to method to get distance between them
             distance = self.distance_between(from_id, to_id)
+            # Checks if the distance is smaller than the current minimum distance
             if distance < min_distance:
+                # Assigns the distance to the min distance
                 min_distance = distance
+                # Assigns the current package to be the next package
                 next_package = package
+                # Sets the array index for deleting
                 min_distance_index = array_index_counter
+            # Increments with each for loop
             array_index_counter += 1
+        # adds package, distance, amount of time, and it's index to route array
         next_route.append(next_package)
         next_route.append(min_distance)
         next_route.append(self.get_time_amount(min_distance))
         next_route.append(min_distance_index)
+        # Returns the array
         return next_route
 
     # Adds all the distances up from the route
